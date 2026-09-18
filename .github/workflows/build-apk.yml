@@ -60,6 +60,8 @@ jobs:
           echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license || true
           echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license || true
           echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" >> ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license || true
+          # parchea p4a para no romper con pip 25+ (BuildDependencyInstallError)
+          find ~/.buildozer -name "build.py" -type f 2>/dev/null | xargs -I {} sed -i "s/pip install -U pip/pip install pip==24.0/" {} 2>/dev/null || true
           for SM in $(find ~ -name sdkmanager -type f 2>/dev/null); do echo "accept $SM"; yes | $SM --licenses 2>/dev/null || true; done
           yes | sdkmanager --licenses 2>/dev/null || true
           buildozer --accept-sdk-license -v android debug
