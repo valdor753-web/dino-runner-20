@@ -30,7 +30,9 @@ jobs:
             libffi-dev libssl-dev libltdl-dev
 
       - name: Install buildozer
-        run: pip install --upgrade pip setuptools cython buildozer
+        run: |
+          pip install --upgrade "pip==24.0" setuptools==68 cython buildozer
+          pip --version
 
       - name: Setup SDK tools
         run: |
