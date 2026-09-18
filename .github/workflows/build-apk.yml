@@ -21,9 +21,13 @@ jobs:
       - name: Accept Android licenses
         run: |
           mkdir -p ~/.android && touch ~/.android/repositories.cfg
+          SDKMANAGER=$(find ~/.buildozer -name sdkmanager -type f 2>/dev/null | head -1)
+          if [ -n "$SDKMANAGER" ]; then
+            yes | $SDKMANAGER --licenses || true
+            $SDKMANAGER --install "build-tools;33.0.2" || true
+            $SDKMANAGER --install "build-tools;37.0.0" || true
+          fi
           yes | sdkmanager --licenses || true
-          sdkmanager --install "build-tools;33.0.2" || true
-          sdkmanager --install "build-tools;37.0.0" || true
       - name: Build APK
         run: buildozer --accept-sdk-license -v android debug
       - name: Upload APK artifact
