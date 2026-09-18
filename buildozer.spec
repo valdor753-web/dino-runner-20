@@ -6,8 +6,7 @@ source.dir = .
 source.include_exts = py,png,jpg,jfif,json,txt
 source.include_patterns = img/*,img/dino/*,img/fondo/*
 version = 1.0
-requirements = python3,pygame,pillow,numpy
-p4a.branch = master
+requirements = python3,kivy,pillow
 orientation = landscape
 fullscreen = 1
 
@@ -22,9 +21,8 @@ android.ndk = 27b
 android.sdk = 33
 android.build_tools_version = 33.0.2
 android.accept_sdk_license = True
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 p4a.bootstrap = sdl2
-p4a.branch = develop
 orientation = landscape
 
 # Icono si tienes uno en img/
