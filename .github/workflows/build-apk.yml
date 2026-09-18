@@ -1,35 +1,50 @@
 name: Build APK
+
 on:
-  push: { branches: [main] }
+  push:
+    branches: [main]
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
-        with: { distribution: temurin, java-version: 17 }
-      - uses: actions/setup-python@v5
-        with: { python-version: "3.11" }
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y git zip unzip autoconf libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev libltdl-dev
+            zlib1g-dev libncurses5-dev libncursesw5-dev cmake \
+            libffi-dev libssl-dev libltdl-dev
+
       - name: Install buildozer
         run: pip install --upgrade pip setuptools cython buildozer
+
       - name: Accept Android licenses
         run: |
           mkdir -p ~/.android && touch ~/.android/repositories.cfg
-          SDKMANAGER=$(find ~/.buildozer -name sdkmanager -type f 2>/dev/null | head -1)
-          if [ -n "$SDKMANAGER" ]; then
-            yes | $SDKMANAGER --licenses || true
-            $SDKMANAGER --install "build-tools;33.0.2" || true
-            $SDKMANAGER --install "build-tools;37.0.0" || true
-          fi
           yes | sdkmanager --licenses || true
+          sdkmanager --install "build-tools;33.0.2" || true
+          sdkmanager --install "build-tools;37.0.0" || true
+
       - name: Build APK
-        run: buildozer --accept-sdk-license -v android debug
+        run: |
+          buildozer --accept-sdk-license -v android debug
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
-        with: { name: dino-runner-apk, path: bin/*.apk }
+        with:
+          name: dino-runner-apk
+          path: bin/*.apk
