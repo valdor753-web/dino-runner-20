@@ -22,9 +22,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install system dependencies
         run: |
           sudo apt-get update
