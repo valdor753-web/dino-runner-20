@@ -36,11 +36,12 @@ jobs:
         run: |
           mkdir -p ~/.android && touch ~/.android/repositories.cfg
           yes | sdkmanager --licenses || true
-          sdkmanager --install "build-tools;33.0.2" || true
-          sdkmanager --install "build-tools;37.0.0" || true
 
       - name: Build APK
         run: |
+          mkdir -p ~/.android && touch ~/.android/repositories.cfg
+          for SM in $(find ~ -name sdkmanager -type f 2>/dev/null); do echo "accept $SM"; yes | $SM --licenses || true; done
+          yes | sdkmanager --licenses || true
           buildozer --accept-sdk-license -v android debug
 
       - name: Upload APK artifact
