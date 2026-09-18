@@ -6,8 +6,7 @@ source.dir = .
 source.include_exts = py,png,jpg,jfif,json,txt
 source.include_patterns = img/*,img/dino/*,img/fondo/*
 version = 1.0
-requirements = python3==3.11.9,pygame==2.6.1,pillow,numpy
-p4a.fork = kivy
+requirements = python3,pygame,pillow,numpy
 p4a.branch = master
 orientation = landscape
 fullscreen = 1
