@@ -16,9 +16,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git zip unzip autoconf libtool pkg-config \
             zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev libltdl-dev
-      - run: pip install --upgrade pip setuptools cython buildozer
-        name: Install buildozer
-      - run: buildozer --accept-sdk-license -v android debug
-        name: Build APK
-      - uses: actions/upload-artifact@v4
+      - name: Install buildozer
+        run: pip install --upgrade pip setuptools cython buildozer
+      - name: Accept Android licenses
+        run: |
+          mkdir -p ~/.android && touch ~/.android/repositories.cfg
+          yes | sdkmanager --licenses || true
+          sdkmanager --install "build-tools;33.0.2" || true
+          sdkmanager --install "build-tools;37.0.0" || true
+      - name: Build APK
+        run: buildozer --accept-sdk-license -v android debug
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
         with: { name: dino-runner-apk, path: bin/*.apk }
