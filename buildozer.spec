@@ -6,8 +6,6 @@ source.dir = .
 source.include_exts = py,png,jpg,jfif,json,txt
 source.include_patterns = img/*,img/dino/*,img/fondo/*
 version = 1.0
-version.regex = __version__ = ['"](.*)['"]
-version.filename = %(source.dir)s/main.py
 requirements = python3,pygame,pillow,numpy
 orientation = landscape
 fullscreen = 1
